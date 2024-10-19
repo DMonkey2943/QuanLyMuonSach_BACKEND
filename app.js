@@ -1,11 +1,14 @@
 const express = require("express");
 const cors = require("cors");
 const ApiError = require("./app/api-error");
+const nhaXuatBanRouter = require("./app/routes/nhaxuatban.route");
 
 const app = express();
 
 app.use(cors());
 app.use(express.json());
+
+app.use("/api/nhaxuatban", nhaXuatBanRouter);
 
 app.get("/", (req, res) => {
     res.json({ message: "Home page" });
