@@ -4,6 +4,7 @@ const ApiError = require("./app/api-error");
 const nhaXuatBanRouter = require("./app/routes/nhaxuatban.route");
 const sachRouter = require("./app/routes/sach.route");
 const docGiaRouter = require("./app/routes/docgia.route");
+const nhanVienRouter = require("./app/routes/nhanvien.route");
 
 const app = express();
 
@@ -13,6 +14,7 @@ app.use(express.json());
 app.use("/api/nhaxuatban", nhaXuatBanRouter);
 app.use("/api/sach", sachRouter);
 app.use("/api/docgia", docGiaRouter);
+app.use("/api/nhanvien", nhanVienRouter);
 
 app.get("/", (req, res) => {
     res.json({ message: "Home page" });
