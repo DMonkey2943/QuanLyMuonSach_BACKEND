@@ -4,10 +4,10 @@ const ApiError = require("../api-error");
 const DocGia = require('../models/DocGia.model');
 
 exports.createDocGia = async (req, res, next) => {
-    // if (!req.body?.HoTen || !req.body?.Email || !req.body?.MatKhau || !req.body?.NgaySinh ||
-    //     !req.body?.Phai || !req.body?.DiaChi || !req.body?.DienThoai) {
-    //     return next(new ApiError(400, "Vui lòng điền đầy đủ thông tin"));
-    // }
+    if (!req.body?.HoTen || !req.body?.Email || !req.body?.MatKhau ||
+        !req.body?.Phai || !req.body?.DiaChi || !req.body?.DienThoai) {
+        return next(new ApiError(400, "Vui lòng điền đầy đủ thông tin"));
+    }
 
     const { HoTen, Email, MatKhau, Phai, DiaChi, DienThoai } = req.body;
     const hashedMatKhau = await bcrypt.hash(MatKhau, 10);
