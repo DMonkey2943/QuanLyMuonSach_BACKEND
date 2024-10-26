@@ -7,11 +7,13 @@ const sachRouter = require("./app/routes/sach.route");
 const docGiaRouter = require("./app/routes/docgia.route");
 const nhanVienRouter = require("./app/routes/nhanvien.route");
 const authRouter = require("./app/routes/auth.route");
+const path = require('path');
 
 const app = express();
 
 app.use(cors());
 app.use(express.json());
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 app.use("/api/nhaxuatban", nhaXuatBanRouter);
 app.use("/api/sach", sachRouter);
