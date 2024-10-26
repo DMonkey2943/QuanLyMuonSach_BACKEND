@@ -1,10 +1,12 @@
 const express = require("express");
 const cors = require("cors");
+const dotenv = require("dotenv").config();
 const ApiError = require("./app/api-error");
 const nhaXuatBanRouter = require("./app/routes/nhaxuatban.route");
 const sachRouter = require("./app/routes/sach.route");
 const docGiaRouter = require("./app/routes/docgia.route");
 const nhanVienRouter = require("./app/routes/nhanvien.route");
+const authRouter = require("./app/routes/auth.route");
 
 const app = express();
 
@@ -15,6 +17,7 @@ app.use("/api/nhaxuatban", nhaXuatBanRouter);
 app.use("/api/sach", sachRouter);
 app.use("/api/docgia", docGiaRouter);
 app.use("/api/nhanvien", nhanVienRouter);
+app.use("/api/auth", authRouter);
 
 app.get("/", (req, res) => {
     res.json({ message: "Home page" });
