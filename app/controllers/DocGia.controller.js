@@ -22,7 +22,8 @@ exports.createDocGia = async (req, res, next) => {
 
 exports.getAllDocGia = async (req, res, next) => {
     try {
-        const docgia = await DocGia.find({}).select('-MatKhau');
+        // const docgia = await DocGia.find({}).select('-MatKhau');
+        const docgia = await DocGia.find({});
         return res.send(docgia);
     } catch (error) {
         return next(new ApiError(500, "Lấy danh sách Độc giả thất bại!"));
@@ -31,7 +32,7 @@ exports.getAllDocGia = async (req, res, next) => {
 
 exports.getDocGiaById = async (req, res, next) => {
     try {
-        const docgia = await DocGia.findById(req.params.id).select('-MatKhau');
+        const docgia = await DocGia.findById(req.params.id);
 
         if (!docgia) {
             return next(new ApiError(404, "Không tìm thấy Độc giả"));

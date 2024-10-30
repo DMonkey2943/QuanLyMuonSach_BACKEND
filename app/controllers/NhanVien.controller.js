@@ -31,7 +31,7 @@ exports.getAllNhanVien = async (req, res, next) => {
 
 exports.getNhanVienById = async (req, res, next) => {
     try {
-        const nhanvien = await NhanVien.findById(req.params.id).select('-MatKhau');
+        const nhanvien = await NhanVien.findById(req.params.id);
 
         if (!nhanvien) {
             return next(new ApiError(404, "Không tìm thấy Nhân viên"));
