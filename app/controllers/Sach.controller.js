@@ -22,18 +22,18 @@ exports.createSach = [
             return next(new ApiError(400, "Vui lòng điền đầy đủ thông tin"));
         }
 
-        const { TenSach, TacGia, DonGia, SoQuyen, NamXuatBan, NXBId } = req.body;
-        const HinhAnh = req.file ? req.file.path : null;
+        let { TenSach, TacGia, DonGia, SoQuyen, NamXuatBan, NXBId } = req.body;
+        let HinhAnh = req.file ? req.file.path : null;
 
         try {
-            const nxb = await NhaXuatBan.findById(NXBId);
+            let nxb = await NhaXuatBan.findById(NXBId);
             if (!nxb) {
                 return next(new ApiError(404, "NXB không tồn tại"));
             }
 
             HinhAnh = HinhAnh.replace(/\\/g, '/')
 
-            const sach = await Sach.create({
+            let sach = await Sach.create({
                 TenSach, TacGia, DonGia, SoQuyen, NamXuatBan, HinhAnh,
                 NhaXuatBan: NXBId
             });
@@ -63,13 +63,18 @@ exports.getAllSach = async (req, res, next) => {
 exports.getSachById = async (req, res, next) => {
     try {
         const { id } = req.params;
-        const sach = await Sach.findById(id).populate('NhaXuatBan', 'TenNXB');
+        let sach = await Sach.findById(id).populate('NhaXuatBan', 'TenNXB');
 
         if (!sach) {
             return next(new ApiError(404, "Không tìm thấy Sách"));
         }
 
-        return res.send(sach);
+        let sachWithImageUrl = {
+            ...sach.toObject(),
+            HinhAnh: sach.HinhAnh ? `${req.protocol}://${req.get('host')}/${sach.HinhAnh}` : null
+        }
+
+        return res.send(sachWithImageUrl);
     } catch (error) {
         return next(new ApiError(500, `Lấy thông tin Sách thất bại: ${error.message}`));
     }
