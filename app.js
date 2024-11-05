@@ -6,6 +6,7 @@ const nhaXuatBanRouter = require("./app/routes/nhaxuatban.route");
 const sachRouter = require("./app/routes/sach.route");
 const docGiaRouter = require("./app/routes/docgia.route");
 const nhanVienRouter = require("./app/routes/nhanvien.route");
+const theoDoiMuonSachRouter = require("./app/routes/theodoimuonsach.route");
 const authRouter = require("./app/routes/auth.route");
 const path = require('path');
 
@@ -19,6 +20,7 @@ app.use("/api/nhaxuatban", nhaXuatBanRouter);
 app.use("/api/sach", sachRouter);
 app.use("/api/docgia", docGiaRouter);
 app.use("/api/nhanvien", nhanVienRouter);
+app.use("/api/theodoimuonsach", theoDoiMuonSachRouter);
 app.use("/api/auth", authRouter);
 
 app.get("/", (req, res) => {
