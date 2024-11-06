@@ -45,8 +45,14 @@ exports.createSach = [
 ];
 
 exports.getAllSach = async (req, res, next) => {
+    let sach = [];
     try {
-        const sach = await Sach.find({}).populate('NhaXuatBan', 'TenNXB');
+        const query = req.query.TenSach;
+        if (query) {
+            sach = await Sach.find({ TenSach: { $regex: query, $options: 'i' } }).populate('NhaXuatBan', 'TenNXB');
+        } else {
+            sach = await Sach.find({}).populate('NhaXuatBan', 'TenNXB');
+        }
 
         // Thêm URL đầy đủ cho ảnh
         const sachWithImageUrl = sach.map(item => ({
