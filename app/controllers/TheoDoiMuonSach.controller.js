@@ -23,6 +23,9 @@ exports.borrowSach = async (req, res, next) => {
     }
 
     try {
+        sach.SoQuyen -= 1;
+        await sach.save();
+
         const muonSach = await TheoDoiMuonSach.create({
             DocGia: DocGiaId,
             Sach: SachId,
@@ -48,9 +51,30 @@ exports.returnSach = async (req, res, next) => {
             return next(new ApiError(404, "Không tìm thấy lượt Mượn sách này!"));
         }
 
+        const tdms = await TheoDoiMuonSach.findById(tdmsId)
+        const SachId = tdms.Sach
+        const sach = await Sach.findById(SachId);
+        sach.SoQuyen += 1;
+        await sach.save();
+
         return res.send(traSach);
     } catch (error) {
         return next(new ApiError(500, `Trả sách thất bại: ${error.message}`));
+    }
+};
+
+exports.getTDMSById = async (req, res, next) => {
+    try {
+        const { id } = req.params;
+        let sach = await Sach.findById(id).populate('NhaXuatBan', 'TenNXB');
+
+        if (!sach) {
+            return next(new ApiError(404, "Không tìm thấy Sách"));
+        }
+
+        return res.send(sachWithImageUrl);
+    } catch (error) {
+        return next(new ApiError(500, `Lấy thông tin Sách thất bại: ${error.message}`));
     }
 };
 
@@ -104,13 +128,13 @@ exports.checkSachAvailable = async (req, res, next) => {
         const { sachId } = req.params;
 
         // Kiểm tra số lượng sách đã mượn
-        const daMuon = await TheoDoiMuonSach.countDocuments({
-            Sach: sachId,
-            NgayTra: { $exists: false } // Chỉ tính các bản ghi chưa có NgayTra, nghĩa là sách chưa được trả
-        });
+        // const daMuon = await TheoDoiMuonSach.countDocuments({
+        //     Sach: sachId,
+        //     NgayTra: { $exists: false }
+        // });
         const sach = await Sach.findById(sachId);
 
-        const sachConLai = sach.SoQuyen - daMuon;
+        const sachConLai = sach.SoQuyen;
         
         return res.send({
             available: sachConLai > 0, //Nếu số lượng sách còn lại > 0 thì available: true
