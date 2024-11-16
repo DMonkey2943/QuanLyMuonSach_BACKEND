@@ -4,8 +4,9 @@ const ApiError = require("../api-error");
 const DocGia = require('../models/DocGia.model');
 
 exports.createDocGia = async (req, res, next) => {
+    console.log(req.body);
     if (!req.body?.HoTen || !req.body?.Email || !req.body?.MatKhau ||
-        !req.body?.Phai || !req.body?.DiaChi || !req.body?.DienThoai) {
+        req.body?.Phai === undefined || !req.body?.DiaChi || !req.body?.DienThoai) {
         return next(new ApiError(400, "Vui lòng điền đầy đủ thông tin"));
     }
 
